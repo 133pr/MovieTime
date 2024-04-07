@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<nav class="flex justify-between p-5 bg-slate-800 text-white items-center">
+  <div>
+    <a href="/">
+      <h1 class="text-xl underline">
+        Movie Time
+      </h1>
+    </a>
+  </div>
+  <div class="flex gap-x-2 items-end">
+    <a href="/">Home</a>
+    <a href="/movies">Movies</a>
+  </div>
+</nav>
+<main class="px-5 py-7">
+  {{{body}}}
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const videoPlayer = document.getElementById('videoPlayer');
+  const subtitleTrack = document.getElementById('subtitleTrack');
+
+  socket.on('videoChunk', (chunk) => {
+    // Append video chunk to the video element
+    videoPlayer.src = URL.createObjectURL(new Blob([chunk], { type: 'video/mp4' }));
+  });
+
+  socket.on('subtitleChunk', (chunk) => {
+    // Append subtitle chunk to the subtitle track
+    subtitleTrack.src = URL.createObjectURL(new Blob([chunk], { type: 'text/vtt' }));
+  });
+
+  socket.on('videoEnd', () => {
+    // Handle video end event
+    console.log('Video stream ended');
+  });
+</script>
+</body>
+</html>

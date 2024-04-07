@@ -1,0 +1,44 @@
+<h2 class="text-3xl font-bold border-b pb-2 mb-2">{{title}}</h2>
+<a href="/movies/create" class="btn btn-primary mb-2">
+  Create
+</a>
+<table class="border w-full">
+  <thead>
+  <tr>
+    <th class="border px-4 py-2">Name</th>
+    <th class="border px-4 py-2">Subtitle</th>
+    <th class="border px-4 py-2">URL</th>
+    <th class="border px-4 py-2">Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{#each items}}
+    <tr>
+      <td class="border px-4 py-2 text-center">
+        {{this.title}}
+      </td>
+      <td class="border px-4 py-2 text-center uppercase">
+        {{#if this.subtitle.length}}
+          yes
+        {{else}}
+          no
+        {{/if}}
+      </td>
+      <td class="border px-4 py-2 text-center">
+        {{this.movie_url}}
+      </td>
+      <td class="border px-4 py-2 text-center">
+        <a href="/watch/{{this.id}}" class="text-blue-500 hover:text-blue-700">
+          Watch
+        </a>
+        <a href="/movies/edit/{{this.id}}" class="text-blue-500 hover:text-blue-700">
+          Edit
+        </a>
+        <a href="/movies/remove/{{this.id}}" class="text-blue-500 hover:text-blue-700">
+          Remove
+        </a>
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>

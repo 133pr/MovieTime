@@ -1,0 +1,26 @@
+<form action="/movies/{{action}}" method="post" enctype="multipart/form-data">
+  <div class="flex flex-col gap-2 mb-5">
+    <label for="title" class="font-bold">
+      Title
+    </label>
+    <input type="text" name="title" id="title" class="form-input rounded-md" value="{{item.title}}">
+  </div>
+  <div class="flex flex-col gap-2 mb-5">
+    <label for="movie_url" class="font-bold">
+      Movie URL
+    </label>
+    <input type="text" name="movie_url" id="movie_url" class="form-input rounded-md" value="{{item.movie_url}}">
+  </div>
+  <div class="flex flex-col gap-2 mb-5">
+    <label for="subtitle" class="font-bold">
+      Subtitle
+    </label>
+    <!--    <textarea name="subtitle" id="subtitle" class="form-input rounded-md">{{item.subtitle}}</textarea>-->
+    <input type="file" name="subtitle" id="subtitle" class="form-input rounded-md" />
+  </div>
+  <div class="flex justify-end">
+    <button type="submit" class="btn btn-success">
+      Submit
+    </button>
+  </div>
+</form>
