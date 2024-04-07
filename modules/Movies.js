@@ -55,6 +55,7 @@ const create = async (req) => {
   const body = req.body;
   let subtitle = "";
   let movie_url = "";
+
   for (const file of req.files) {
     const vtt = srtToVtt(file.buffer.toString());
     try {
@@ -66,10 +67,16 @@ const create = async (req) => {
       console.error(err);
     }
   }
-  const filename = body.movie_url.substring(body.movie_url.lastIndexOf("/") + 1);
-  const fileFormat = filename.substring(filename.lastIndexOf(".") + 1);
-  await downloadFile(body.movie_url, "public/uploads/" + body.title + "." + fileFormat);
-  movie_url = "/uploads/" + body.title + "." + fileFormat;
+
+  if (body.url_type === 'local') {
+    const filename = body.movie_url.substring(body.movie_url.lastIndexOf("/") + 1);
+    const fileFormat = filename.substring(filename.lastIndexOf(".") + 1);
+    await downloadFile(body.movie_url, "public/uploads/" + body.title + "." + fileFormat);
+    movie_url = "/uploads/" + body.title + "." + fileFormat;
+  } else {
+    movie_url = body.movie_url;
+  }
+
   const items = await prisma.movie.create({
     data: {
       title: body.title,

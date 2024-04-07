@@ -1,5 +1,59 @@
-<video class="w-2/3 mx-auto" controls crossorigin="anonymous">
+<video class="w-2/3 mx-auto" controls crossorigin="anonymous" id="videoPlayer">
   <source src="{{item.movie_url}}" />
   <track label="Persian" kind="subtitles" srclang="fa" src="{{item.subtitle}}" default>
   Your browser does not support the video tag.
 </video>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  const video = document.getElementById("videoPlayer");
+  let isPlaying = false;
+
+  // Emit control events
+  function emitControl(action, data = null) {
+    socket.emit("videoControl", { action, data });
+  }
+
+  // Start playback after user interaction
+  document.addEventListener("click", function() {
+    if (!isPlaying) {
+      isPlaying = true;
+      emitControl("play");
+    }
+  });
+
+  // Listen to play and pause events
+  video.addEventListener("play", () => {
+    if (!isPlaying) {
+      isPlaying = true;
+      emitControl("play");
+    }
+  });
+
+  video.addEventListener("pause", () => {
+    if (isPlaying) {
+      isPlaying = false;
+      emitControl("pause");
+      // Emit current playback time when paused
+      emitControl("currentTime", video.currentTime);
+    }
+  });
+
+  // Listen to server control events
+  socket.on("videoControl", (data) => {
+    if (data.action === "play") {
+        video.play();
+    }
+    else if (data.action === "pause") {
+      video.pause();
+    }
+    else if (data.action === "currentTime") {
+      const currentTime = parseFloat(data.data);
+      if (!isNaN(currentTime) && isFinite(currentTime)) {
+        video.currentTime = currentTime;
+      }
+    }
+  });
+
+</script>

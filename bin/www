@@ -7,13 +7,13 @@
 const app = require('../app');
 const debug = require('debug')('untitled:server');
 const http = require('http');
-const { exec } = require('child_process');
-
+const socketIo = require('socket.io');
+const env = require('dotenv').config()
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(env.parsed.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -21,7 +21,29 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+const io = socketIo(server);
+let users = 0;
+// Socket.io events
+io.on('connection', (socket) => {
+  console.log('A user connected');
 
+  // Emit event to start video for new user
+  socket.emit('videoControl', { action: 'play' });
+
+  // Handle pause, play, and currentTime events from client
+  socket.on('videoControl', (data) => {
+    if (data.action === 'currentTime') {
+      io.emit('videoControl', data);
+    } else {
+      socket.broadcast.emit('videoControl', data);
+    }
+  });
+
+  // Handle disconnect
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+});
 /**
  * Listen on provided port, on all network interfaces.
  */

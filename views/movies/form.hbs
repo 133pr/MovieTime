@@ -6,6 +6,19 @@
     <input type="text" name="title" id="title" class="form-input rounded-md" value="{{item.title}}">
   </div>
   <div class="flex flex-col gap-2 mb-5">
+    <label for="url_type" class="font-bold">
+      URL Type
+    </label>
+    <label for="online">
+      <input type="radio" name="url_type" id="online" class="" value="online">
+      Online
+    </label>
+    <label for="local">
+      <input type="radio" name="url_type" id="local" class="" value="local">
+      Local
+    </label>
+  </div>
+  <div class="flex flex-col gap-2 mb-5">
     <label for="movie_url" class="font-bold">
       Movie URL
     </label>
@@ -15,7 +28,6 @@
     <label for="subtitle" class="font-bold">
       Subtitle
     </label>
-    <!--    <textarea name="subtitle" id="subtitle" class="form-input rounded-md">{{item.subtitle}}</textarea>-->
     <input type="file" name="subtitle" id="subtitle" class="form-input rounded-md" />
   </div>
   <div class="flex justify-end">

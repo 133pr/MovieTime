@@ -4,8 +4,8 @@ const router = express.Router();
 
 
 router.get("/:id", async function(req, res, next) {
-  const items = await stream(req);
-  res.render("watch/index", { layout: "watch/layout.hbs", title: "Movies", items });
+  const item = await stream(req);
+  res.render("watch/index", { layout: "watch/layout.hbs", title: "Movies", item });
 
 });
 
